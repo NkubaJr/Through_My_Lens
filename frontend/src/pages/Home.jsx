@@ -32,7 +32,6 @@ export default function Home() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Hero */}
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold text-earth-800 mb-3">
           Africa Through Our Lens 🌍
@@ -42,7 +41,6 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-3 mb-8">
         <div>
           <label className="text-xs font-medium text-earth-600 mr-2">Category</label>
@@ -67,7 +65,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Gallery Grid */}
       {loading ? (
         <div className="text-center py-20 text-earth-400">Loading gallery...</div>
       ) : artworks.length === 0 ? (

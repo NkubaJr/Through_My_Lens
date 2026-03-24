@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const CATEGORIES = ['Photography', 'Painting', 'Digital Art', 'Illustration', 'Mixed Media'];
 const COUNTRIES = ['Rwanda', 'Kenya', 'Nigeria', 'Ghana', 'South Africa', 'Ethiopia', 'Tanzania', 'Uganda', 'Senegal', 'Other'];
@@ -16,7 +16,9 @@ export default function Upload() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-earth-600 text-lg">Please <a href="/login" className="underline font-medium">log in</a> to upload artwork.</p>
+        <p className="text-earth-600 text-lg">
+          Please <a href="/login" className="underline font-medium">log in</a> to upload artwork.
+        </p>
       </div>
     );
   }
@@ -51,6 +53,7 @@ export default function Upload() {
       <p className="text-earth-500 text-sm mb-8">Tell the story behind your art</p>
 
       <div className="bg-white rounded-3xl shadow-lg p-8 space-y-5">
+
         <div>
           <label className="block text-sm font-medium text-earth-700 mb-1">Title</label>
           <input
@@ -73,7 +76,9 @@ export default function Upload() {
             placeholder="Paste a link to your image"
             className="w-full border border-earth-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-earth-400"
           />
-          <p className="text-xs text-earth-400 mt-1">Tip: upload your image to imgur.com and paste the link here</p>
+          <p className="text-xs text-earth-400 mt-1">
+            Tip: upload your image to imgur.com and paste the link here
+          </p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -128,6 +133,7 @@ export default function Upload() {
         >
           {loading ? 'Uploading...' : 'Publish Artwork'}
         </button>
+
       </div>
     </div>
   );

@@ -89,7 +89,6 @@ export default function ArtworkDetail() {
             <p className="text-earth-600 leading-relaxed">{artwork.story}</p>
           </div>
 
-          {/* Support Artist Section */}
           <div className="bg-earth-50 rounded-2xl p-6 mt-8">
             <h3 className="text-lg font-semibold text-earth-800 mb-1">Support this Artist 🎨</h3>
             <p className="text-earth-500 text-sm mb-4">Show your appreciation for this work</p>
@@ -109,7 +108,6 @@ export default function ArtworkDetail() {
             </button>
           </div>
 
-          {/* Delete button — only visible to the owner */}
           {user && user.id === artwork.user_id && (
             <button
               onClick={handleDelete}
