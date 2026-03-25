@@ -3,7 +3,6 @@ const path = require('path');
 
 const db = new Database(path.join(__dirname, 'mylens.db'));
 
-// To create tables if they don't exist yet
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,

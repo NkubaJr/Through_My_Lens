@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ArtworkCard from '../components/ArtworkCard';
 
-const CATEGORIES = ['All', 'Photography', 'Painting', 'Digital Art', 'Illustration', 'Mixed Media'];
-const COUNTRIES = ['All', 'Rwanda', 'Kenya', 'Nigeria', 'Ghana', 'South Africa', 'Ethiopia', 'Tanzania', 'Uganda', 'Senegal', 'Other'];
+const CATEGORIES = ['All Categories', 'Photography', 'Painting', 'Digital Art', 'Illustration', 'Mixed Media'];
+const COUNTRIES = ['All Countries', 'Rwanda', 'Kenya', 'Nigeria', 'Ghana', 'South Africa', 'Ethiopia', 'Tanzania', 'Uganda', 'Senegal', 'Other'];
 
 export default function Home() {
   const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState('All');
-  const [country, setCountry] = useState('All');
+  const [category, setCategory] = useState('All Categories');
+  const [country, setCountry] = useState('All Countries');
 
   useEffect(() => {
     fetchArtworks();
@@ -19,8 +19,8 @@ export default function Home() {
     setLoading(true);
     try {
       const params = {};
-      if (category !== 'All') params.category = category;
-      if (country !== 'All') params.country = country;
+      if (category !== 'All Categories') params.category = category;
+      if (country !== 'All Countries') params.country = country;
       const res = await axios.get('http://localhost:5000/api/artworks', { params });
       setArtworks(res.data);
     } catch (err) {
@@ -31,51 +31,86 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold text-earth-800 mb-3">
-          Africa Through Our Lens 🌍
+    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 60px' }}>
+
+      {/* Hero */}
+      <div style={{ textAlign: 'center', padding: '40px 0 32px' }}>
+        <h1 style={{
+          fontSize: '3.5rem',
+          fontWeight: '800',
+          color: '#3b1f0e',
+          lineHeight: 1.1,
+          marginBottom: '16px',
+          fontFamily: 'Playfair Display, serif'
+        }}>
+          Africa through my lens
         </h1>
-        <p className="text-earth-500 max-w-xl mx-auto text-sm">
-          A gallery of authentic African stories told through art. Every piece has a voice — take a moment to listen.
+        <p style={{ color: '#a85f18', fontSize: '1.1rem', fontFamily: 'Inter, sans-serif' }}>
+          Stories, art, and culture from young African creatives
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-3 mb-8">
-        <div>
-          <label className="text-xs font-medium text-earth-600 mr-2">Category</label>
+      {/* Filters */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '40px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+          <label style={{ fontSize: '0.85rem', color: '#3b1f0e', fontWeight: '500' }}>Category</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="border border-earth-200 rounded-xl px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-earth-400 bg-white"
+            style={{
+              border: '2px solid #a85f18',
+              borderRadius: '999px',
+              padding: '10px 24px',
+              fontSize: '0.95rem',
+              color: '#3b1f0e',
+              background: 'white',
+              cursor: 'pointer',
+              outline: 'none',
+              minWidth: '180px'
+            }}
           >
             {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
 
-        <div>
-          <label className="text-xs font-medium text-earth-600 mr-2">Country</label>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+          <label style={{ fontSize: '0.85rem', color: '#3b1f0e', fontWeight: '500' }}>Country</label>
           <select
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            className="border border-earth-200 rounded-xl px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-earth-400 bg-white"
+            style={{
+              border: '2px solid #a85f18',
+              borderRadius: '999px',
+              padding: '10px 24px',
+              fontSize: '0.95rem',
+              color: '#3b1f0e',
+              background: 'white',
+              cursor: 'pointer',
+              outline: 'none',
+              minWidth: '180px'
+            }}
           >
             {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
       </div>
 
+      {/* Gallery Grid */}
       {loading ? (
-        <div className="text-center py-20 text-earth-400">Loading gallery...</div>
+        <div style={{ textAlign: 'center', padding: '80px 0', color: '#a85f18' }}>Loading gallery...</div>
       ) : artworks.length === 0 ? (
-        <div className="text-center py-20">
-          <p className="text-earth-400 text-lg">No artworks yet.</p>
-          <p className="text-earth-300 text-sm mt-1">Be the first to share your story!</p>
+        <div style={{ textAlign: 'center', padding: '80px 0' }}>
+          <p style={{ color: '#a85f18', fontSize: '1.2rem' }}>No artworks yet.</p>
+          <p style={{ color: '#c9a06a', fontSize: '0.9rem', marginTop: '8px' }}>Be the first to share your story!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {artworks.map(artwork => (
-            <ArtworkCard key={artwork.artwork_id} artwork={artwork} />
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '24px'
+        }}>
+          {artworks.map((artwork, index) => (
+            <ArtworkCard key={artwork.artwork_id} artwork={artwork} index={index} />
           ))}
         </div>
       )}
