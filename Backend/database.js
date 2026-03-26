@@ -28,12 +28,31 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS transactions (
     transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
     support_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    visitor_name TEXT,
     visitor_email TEXT,
+    message TEXT,
+    amount TEXT,
+    type TEXT DEFAULT 'support',
+    artwork_id INTEGER NOT NULL,
+    FOREIGN KEY (artwork_id) REFERENCES artworks(artwork_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS likes (
+    like_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    visitor_identifier TEXT NOT NULL,
+    artwork_id INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (artwork_id) REFERENCES artworks(artwork_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS comments (
+    comment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     artwork_id INTEGER NOT NULL,
     FOREIGN KEY (artwork_id) REFERENCES artworks(artwork_id)
   );
 `);
-
-console.log('Database ready with all tables!');
 
 module.exports = db;
