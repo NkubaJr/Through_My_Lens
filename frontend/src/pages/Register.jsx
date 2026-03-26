@@ -27,62 +27,121 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-earth-800 mb-2">Join My Lens</h2>
-        <p className="text-earth-500 text-sm mb-6">Share your story with the world</p>
+    <div style={{
+      minHeight: '90vh', display: 'flex',
+      alignItems: 'center', justifyContent: 'center',
+      padding: '24px'
+    }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-earth-700 mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              className="w-full border border-earth-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-earth-400"
-            />
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{
+            width: '64px', height: '64px', borderRadius: '50%',
+            backgroundColor: '#3b1f0e',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 16px', fontSize: '1.8rem'
+          }}>
+            🌍
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-earth-700 mb-1">Username</label>
-            <input
-              type="text"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-              placeholder="yourname"
-              className="w-full border border-earth-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-earth-400"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-earth-700 mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              className="w-full border border-earth-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-earth-400"
-            />
-          </div>
-
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full bg-earth-600 hover:bg-earth-500 text-white font-semibold py-2.5 rounded-xl transition disabled:opacity-50"
-          >
-            {loading ? 'Creating account...' : 'Create Account'}
-          </button>
+          <h2 style={{
+            fontFamily: 'Playfair Display, serif',
+            fontSize: '2rem', fontWeight: '800',
+            color: '#3b1f0e', marginBottom: '6px'
+          }}>
+            Join My Lens
+          </h2>
+          <p style={{ color: '#a85f18', fontSize: '0.9rem' }}>
+            Share your story with the world
+          </p>
         </div>
 
-        <p className="text-center text-sm text-earth-500 mt-6">
-          Already have an account?{' '}
-          <Link to="/login" className="text-earth-600 font-medium hover:underline">Log in</Link>
+        {/* Card */}
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '24px',
+          padding: '32px',
+          boxShadow: '0 4px 24px rgba(59,31,14,0.1)'
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+
+            <div>
+              <label style={labelStyle}>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                style={inputStyle}
+              />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Username</label>
+              <input
+                type="text"
+                name="username"
+                value={form.username}
+                onChange={handleChange}
+                placeholder="yourname"
+                style={inputStyle}
+              />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Password</label>
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                style={inputStyle}
+              />
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              style={{
+                width: '100%', padding: '13px',
+                backgroundColor: loading ? '#c9a06a' : '#3b1f0e',
+                color: 'white', border: 'none',
+                borderRadius: '12px', fontSize: '1rem',
+                fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer',
+                marginTop: '4px'
+              }}
+            >
+              {loading ? 'Creating account...' : 'Create Account'}
+            </button>
+          </div>
+
+          <p style={{ textAlign: 'center', fontSize: '0.88rem', color: '#a85f18', marginTop: '20px' }}>
+            Already have an account?{' '}
+            <Link to="/login" style={{ color: '#3b1f0e', fontWeight: '700', textDecoration: 'none' }}>
+              Log In
+            </Link>
+          </p>
+        </div>
+
+        <p style={{ textAlign: 'center', color: '#c9a06a', fontSize: '0.82rem', marginTop: '20px' }}>
+          Stories, art and culture from young African creatives
         </p>
       </div>
     </div>
   );
 }
+
+const labelStyle = {
+  display: 'block', fontSize: '0.85rem',
+  fontWeight: '600', color: '#3b1f0e', marginBottom: '6px'
+};
+
+const inputStyle = {
+  width: '100%', padding: '12px 16px',
+  border: '2px solid #e8d5b7', borderRadius: '12px',
+  fontSize: '0.92rem', color: '#3b1f0e',
+  outline: 'none', boxSizing: 'border-box',
+  backgroundColor: '#fdf8f0', fontFamily: 'inherit'
+};

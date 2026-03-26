@@ -12,8 +12,54 @@ body {
   background-color: #f5ebe0;
   color: #3b1f0e;
   font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Cpath fill='%23a85f18' opacity='0.07' d='M200 20 C150 20 120 40 100 70 C80 100 75 130 80 160 C85 190 70 210 60 240 C50 270 55 300 70 325 C85 350 80 375 90 395 C100 415 120 430 145 440 C170 450 190 455 200 458 C210 455 230 450 255 440 C280 430 300 415 310 395 C320 375 315 350 330 325 C345 300 350 270 340 240 C330 210 315 190 320 160 C325 130 320 100 300 70 C280 40 250 20 200 20Z'/%3E%3Cpath fill='%23a85f18' opacity='0.05' d='M155 60 C140 75 130 95 128 115 C155 100 175 90 200 88 C225 90 245 100 272 115 C270 95 260 75 245 60Z'/%3E%3Cpath fill='%23a85f18' opacity='0.05' d='M80 240 C65 255 55 275 58 295 C70 285 85 278 100 275Z'/%3E%3Cpath fill='%23a85f18' opacity='0.05' d='M320 240 C335 255 345 275 342 295 C330 285 315 278 300 275Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 h1, h2, h3 {
   font-family: 'Playfair Display', serif;
+}
+
+.desktop-sidebar {
+  display: flex !important;
+}
+.mobile-nav {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .desktop-sidebar {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: block !important;
+  }
+
+  body {
+    padding-bottom: 70px;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
 }

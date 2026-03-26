@@ -18,7 +18,6 @@ router.post('/register', (req, res) => {
   }
 
   const password_hash = bcrypt.hashSync(password, 10);
-
   const result = db.prepare(
     'INSERT INTO users (email, username, password_hash) VALUES (?, ?, ?)'
   ).run(email, username, password_hash);
@@ -51,6 +50,27 @@ router.post('/login', (req, res) => {
     token,
     user: { id: user.user_id, username: user.username, email: user.email, role: user.role }
   });
+});
+
+// POST /api/auth/create-admin — run once to create admin account
+router.post('/create-admin', (req, res) => {
+  const { email, username, password, secret } = req.body;
+
+  if (secret !== 'mylens_admin_2024') {
+    return res.status(403).json({ error: 'Invalid secret' });
+  }
+
+  const existing = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  if (existing) {
+    return res.status(400).json({ error: 'Email already registered' });
+  }
+
+  const password_hash = bcrypt.hashSync(password, 10);
+  db.prepare(
+    'INSERT INTO users (email, username, password_hash, role) VALUES (?, ?, ?, ?)'
+  ).run(email, username, password_hash, 'Admin');
+
+  res.json({ message: 'Admin account created!' });
 });
 
 module.exports = router;
