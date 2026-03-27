@@ -1,4 +1,3 @@
-import Admin from './pages/Admin';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -9,6 +8,7 @@ import Register from './pages/Register';
 import Upload from './pages/Upload';
 import Profile from './pages/Profile';
 import ArtworkDetail from './pages/ArtworkDetail';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -63,18 +63,17 @@ function App() {
             }} />
           </div>
 
-          {/* All content sits above the shapes */}
           <div style={{ position: 'relative', zIndex: 1 }}>
             <Navbar />
             <Toaster position="top-right" />
             <Routes>
-              <Route path="/admin" element={<Admin />} />
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/artwork/:id" element={<ArtworkDetail />} />
+              <Route path="/admin" element={<Admin />} />
             </Routes>
           </div>
         </div>
