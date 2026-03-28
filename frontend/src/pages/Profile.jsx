@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext.jsx';
+import API_BASE from '../config.js';
 
 export default function Profile() {
   const { user, token, logout } = useAuth();
@@ -19,7 +20,7 @@ export default function Profile() {
 
   const fetchMyArtworks = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/artworks');
+      const res = await axios.get(`${API_BASE}/api/artworks`);
       const mine = res.data.filter(a => a.user_id === user.id);
       setArtworks(mine);
 
@@ -27,7 +28,7 @@ export default function Profile() {
       for (const artwork of mine) {
         try {
           const conn = await axios.get(
-            `http://localhost:5000/api/artworks/${artwork.artwork_id}/connections`,
+            `${API_BASE}/api/artworks/${artwork.artwork_id}/connections`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           conn.data.forEach(c => allConnections.push({ ...c, artwork_title: artwork.title }));
@@ -44,7 +45,7 @@ export default function Profile() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this artwork?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/artworks/${id}`, {
+      await axios.delete(`${API_BASE}/api/artworks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Artwork deleted');
@@ -81,10 +82,7 @@ export default function Profile() {
             </svg>
           </div>
           <div>
-            <h2 style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: '1.8rem', fontWeight: '800', color: '#3b1f0e'
-            }}>
+            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', fontWeight: '800', color: '#3b1f0e' }}>
               My Portfolio
             </h2>
             <p style={{ color: '#a85f18', fontSize: '0.88rem' }}>{user.username}</p>
@@ -97,8 +95,7 @@ export default function Profile() {
             style={{
               backgroundColor: '#3b1f0e', color: 'white',
               padding: '10px 20px', borderRadius: '12px',
-              textDecoration: 'none', fontSize: '0.88rem',
-              fontWeight: '600'
+              textDecoration: 'none', fontSize: '0.88rem', fontWeight: '600'
             }}
           >
             Upload New
@@ -151,11 +148,7 @@ export default function Profile() {
             </Link>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '20px'
-          }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
             {artworks.map(artwork => (
               <div key={artwork.artwork_id} style={{
                 backgroundColor: 'white', borderRadius: '16px',
@@ -169,22 +162,17 @@ export default function Profile() {
                   />
                 </Link>
                 <div style={{ padding: '14px' }}>
-                  <h3 style={{
-                    fontFamily: 'Playfair Display, serif',
-                    color: '#3b1f0e', fontSize: '1rem', marginBottom: '4px'
-                  }}>
+                  <h3 style={{ fontFamily: 'Playfair Display, serif', color: '#3b1f0e', fontSize: '1rem', marginBottom: '4px' }}>
                     {artwork.title}
                   </h3>
-                  <p style={{ fontSize: '0.78rem', color: '#a85f18' }}>
-                    {artwork.category} · {artwork.country}
-                  </p>
+                  <p style={{ fontSize: '0.78rem', color: '#a85f18' }}>{artwork.category} · {artwork.country}</p>
                   <button
                     onClick={() => handleDelete(artwork.artwork_id)}
                     style={{
-                      marginTop: '10px', width: '100%',
-                      padding: '7px', backgroundColor: 'transparent',
-                      border: '1.5px solid #fca5a5', color: '#dc2626',
-                      borderRadius: '8px', fontSize: '0.82rem', cursor: 'pointer'
+                      marginTop: '10px', width: '100%', padding: '7px',
+                      backgroundColor: 'transparent', border: '1.5px solid #fca5a5',
+                      color: '#dc2626', borderRadius: '8px',
+                      fontSize: '0.82rem', cursor: 'pointer'
                     }}
                   >
                     Delete
@@ -209,17 +197,10 @@ export default function Profile() {
                 backgroundColor: 'white', borderRadius: '16px',
                 padding: '20px', boxShadow: '0 2px 12px rgba(59,31,14,0.08)'
               }}>
-                <div style={{
-                  display: 'flex', justifyContent: 'space-between',
-                  alignItems: 'flex-start', marginBottom: '10px'
-                }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                   <div>
-                    <p style={{ fontWeight: '700', color: '#3b1f0e', fontSize: '1rem' }}>
-                      {conn.visitor_name}
-                    </p>
-                    <p style={{ color: '#a85f18', fontSize: '0.85rem' }}>
-                      {conn.visitor_email}
-                    </p>
+                    <p style={{ fontWeight: '700', color: '#3b1f0e', fontSize: '1rem' }}>{conn.visitor_name}</p>
+                    <p style={{ color: '#a85f18', fontSize: '0.85rem' }}>{conn.visitor_email}</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     {conn.amount && conn.amount !== '0' && (
@@ -231,14 +212,10 @@ export default function Profile() {
                         Offer: ${conn.amount}
                       </span>
                     )}
-                    <p style={{ fontSize: '0.75rem', color: '#c9a06a', marginTop: '4px' }}>
-                      re: {conn.artwork_title}
-                    </p>
+                    <p style={{ fontSize: '0.75rem', color: '#c9a06a', marginTop: '4px' }}>re: {conn.artwork_title}</p>
                   </div>
                 </div>
-                <p style={{ color: '#5c3212', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  {conn.message}
-                </p>
+                <p style={{ color: '#5c3212', fontSize: '0.88rem', lineHeight: '1.6' }}>{conn.message}</p>
                 <button
                   onClick={() => {
                     const subject = encodeURIComponent('Re: ' + conn.artwork_title);
@@ -247,8 +224,7 @@ export default function Profile() {
                     window.open(gmail, '_blank');
                   }}
                   style={{
-                    marginTop: '12px',
-                    backgroundColor: '#3b1f0e', color: 'white',
+                    marginTop: '12px', backgroundColor: '#3b1f0e', color: 'white',
                     padding: '8px 18px', borderRadius: '8px',
                     fontSize: '0.82rem', fontWeight: '600',
                     border: 'none', cursor: 'pointer'
