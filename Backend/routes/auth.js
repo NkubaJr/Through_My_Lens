@@ -5,31 +5,40 @@ const jwt = require('jsonwebtoken');
 const db = require('../database');
 
 // POST /api/auth/register
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { email, username, password } = req.body;
 
   if (!email || !username || !password) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  const existingUser = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-  if (existingUser) {
+  const existing = await db.execute({
+    sql: 'SELECT * FROM users WHERE email = ?',
+    args: [email]
+  });
+  if (existing.rows.length > 0) {
     return res.status(400).json({ error: 'Email already registered' });
   }
 
   const password_hash = bcrypt.hashSync(password, 10);
-  const result = db.prepare(
-    'INSERT INTO users (email, username, password_hash) VALUES (?, ?, ?)'
-  ).run(email, username, password_hash);
+  const result = await db.execute({
+    sql: 'INSERT INTO users (email, username, password_hash) VALUES (?, ?, ?)',
+    args: [email, username, password_hash]
+  });
 
   res.json({ message: 'Account created successfully!', userId: result.lastInsertRowid });
 });
 
 // POST /api/auth/login
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+  const result = await db.execute({
+    sql: 'SELECT * FROM users WHERE email = ?',
+    args: [email]
+  });
+  const user = result.rows[0];
+
   if (!user) {
     return res.status(400).json({ error: 'Invalid email or password' });
   }
@@ -50,27 +59,6 @@ router.post('/login', (req, res) => {
     token,
     user: { id: user.user_id, username: user.username, email: user.email, role: user.role }
   });
-});
-
-// POST /api/auth/create-admin — run once to create admin account
-router.post('/create-admin', (req, res) => {
-  const { email, username, password, secret } = req.body;
-
-  if (secret !== 'mylens_admin_2024') {
-    return res.status(403).json({ error: 'Invalid secret' });
-  }
-
-  const existing = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-  if (existing) {
-    return res.status(400).json({ error: 'Email already registered' });
-  }
-
-  const password_hash = bcrypt.hashSync(password, 10);
-  db.prepare(
-    'INSERT INTO users (email, username, password_hash, role) VALUES (?, ?, ?, ?)'
-  ).run(email, username, password_hash, 'Admin');
-
-  res.json({ message: 'Admin account created!' });
 });
 
 module.exports = router;

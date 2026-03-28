@@ -32,3 +32,14 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+```
+
+---
+
+Now add the Turso and Cloudinary variables to Render. Go to your Render dashboard → `mylens-backend` → **Environment** and add:
+```
+TURSO_URL = libsql://mylens-nkubajr.aws-ap-south-1.turso.io
+TURSO_TOKEN = eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzQ3MDY5ODEsImlkIjoiMDE5ZDM0YzYtNzYwMS03NmIxLTgzNjEtZThmMGVmN2ViNjIzIiwicmlkIjoiNjk5NTQyMjEtOWFkYS00ZDE5LWEwNjUtY2Y3Y2ZkZGI0OGE4In0.dxTXiCILdenF51okC280kEkEkJVNhagkU_f-nFEiryyfgsgX1DAFWJ2AkmG1b9AMIdGQsieL26l0kziyf4zUBQ
+CLOUDINARY_CLOUD_NAME = dalypvrmm
+CLOUDINARY_API_KEY = 738351827722735
+CLOUDINARY_API_SECRET = SHtwpQItdd_WqFgkz8jQOCBMRKM
