@@ -43,29 +43,42 @@ export default function Navbar() {
           zIndex: 1000, boxShadow: '0 4px 20px rgba(59,31,14,0.4)'
         }}
       >
+        {/* Home */}
         <Link to="/" title="Gallery" style={{ color: 'white', display: 'flex' }}>
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
           </svg>
         </Link>
+
+        {/* Upload */}
         <Link to="/upload" title="Upload" style={{ color: 'white', display: 'flex' }}>
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
             <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
           </svg>
         </Link>
+
+        {/* Profile */}
         <Link to={user ? "/profile" : "/login"} title="Profile" style={{ color: 'white', display: 'flex' }}>
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
           </svg>
         </Link>
+
+        {/* Admin Panel — only for admin */}
+        {user && user.role === 'Admin' && (
+          <Link to="/admin" title="Admin Panel" style={{ color: '#e49a3a', display: 'flex' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5z"/>
+            </svg>
+          </Link>
+        )}
+
+        {/* Logout */}
         {user && (
           <button
             onClick={handleLogout}
             title="Logout"
-            style={{
-              color: 'white', background: 'none',
-              border: 'none', cursor: 'pointer', display: 'flex'
-            }}
+            style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer', display: 'flex' }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17 7l-1.4 1.4 2.6 2.6H9v2h9.2l-2.6 2.6L17 17l5-5-5-5zM5 5h7V3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h7v-2H5V5z"/>
@@ -74,7 +87,7 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Bottom nav bar — mobile */}
+      {/* Bottom nav — mobile */}
       <div
         className="mobile-nav"
         style={{
@@ -104,6 +117,14 @@ export default function Navbar() {
             </svg>
             Profile
           </Link>
+          {user && user.role === 'Admin' && (
+            <Link to="/admin" style={{ color: '#e49a3a', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', textDecoration: 'none', fontSize: '0.65rem' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5z"/>
+              </svg>
+              Admin
+            </Link>
+          )}
           {user && (
             <button
               onClick={handleLogout}

@@ -55,14 +55,18 @@ export default function Admin() {
   const handleDelete = async (id) => {
     if (!window.confirm('Permanently delete this artwork?')) return;
     try {
-      await axios.delete(`${API_BASE}/api/artworks/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.delete(`${API_BASE}/api/artworks/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       toast.success('Artwork deleted');
       setArtworks(artworks.filter(a => a.artwork_id !== id));
       setStats(prev => ({ ...prev, total: prev.total - 1 }));
     } catch { toast.error('Failed to delete artwork'); }
   };
 
-  if (user === null) return <div style={{ textAlign: 'center', padding: '80px', color: '#a85f18' }}>Loading...</div>;
+  if (user === null) return (
+    <div style={{ textAlign: 'center', padding: '80px', color: '#a85f18' }}>Loading...</div>
+  );
   if (user.role !== 'Admin') return null;
 
   return (
@@ -76,10 +80,16 @@ export default function Admin() {
         alignItems: 'center', flexWrap: 'wrap', gap: '16px'
       }}>
         <div>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', fontWeight: '800', color: 'white', marginBottom: '4px' }}>
+          <h2 style={{
+            fontFamily: 'Playfair Display, serif',
+            fontSize: '1.8rem', fontWeight: '800',
+            color: 'white', marginBottom: '4px'
+          }}>
             Admin Dashboard
           </h2>
-          <p style={{ color: '#e49a3a', fontSize: '0.88rem' }}>My Lens Content Moderation Panel</p>
+          <p style={{ color: '#e49a3a', fontSize: '0.88rem' }}>
+            My Lens Content Moderation Panel
+          </p>
         </div>
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
           {[
@@ -87,7 +97,10 @@ export default function Admin() {
             { label: 'Active', value: stats.active, color: '#4ade80' },
             { label: 'Hidden', value: stats.hidden, color: '#f87171' }
           ].map(stat => (
-            <div key={stat.label} style={{ backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', padding: '12px 20px', textAlign: 'center' }}>
+            <div key={stat.label} style={{
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              borderRadius: '12px', padding: '12px 20px', textAlign: 'center'
+            }}>
               <p style={{ color: stat.color, fontSize: '1.4rem', fontWeight: '800' }}>{stat.value}</p>
               <p style={{ color: '#f5ebe0', fontSize: '0.75rem' }}>{stat.label}</p>
             </div>
@@ -96,8 +109,15 @@ export default function Admin() {
       </div>
 
       {/* Content */}
-      <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 24px rgba(59,31,14,0.08)' }}>
-        <h3 style={{ fontFamily: 'Playfair Display, serif', color: '#3b1f0e', fontSize: '1.1rem', marginBottom: '20px', fontWeight: '700' }}>
+      <div style={{
+        backgroundColor: 'white', borderRadius: '20px',
+        padding: '24px', boxShadow: '0 4px 24px rgba(59,31,14,0.08)'
+      }}>
+        <h3 style={{
+          fontFamily: 'Playfair Display, serif',
+          color: '#3b1f0e', fontSize: '1.1rem',
+          marginBottom: '20px', fontWeight: '700'
+        }}>
           All Artworks
         </h3>
 
@@ -111,22 +131,48 @@ export default function Admin() {
               <div key={artwork.artwork_id} style={{
                 backgroundColor: artwork.status === 'hidden' ? '#fff5f5' : '#fdf8f0',
                 borderRadius: '14px', padding: '16px',
-                display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap',
+                display: 'flex', gap: '16px',
+                alignItems: 'center', flexWrap: 'wrap',
                 border: artwork.status === 'hidden' ? '1.5px solid #fca5a5' : '1.5px solid #f0d9b5'
               }}>
-                <img src={artwork.file_url} alt={artwork.title} style={{ width: '70px', height: '70px', borderRadius: '10px', objectFit: 'cover', flexShrink: 0 }} />
+
+                {/* Clickable image */}
+                <a href={`/artwork/${artwork.artwork_id}`} style={{ flexShrink: 0 }}>
+                  <img
+                    src={artwork.file_url}
+                    alt={artwork.title}
+                    style={{
+                      width: '70px', height: '70px',
+                      borderRadius: '10px', objectFit: 'cover',
+                      cursor: 'pointer'
+                    }}
+                  />
+                </a>
+
                 <div style={{ flex: 1, minWidth: '180px' }}>
-                  <p style={{ fontWeight: '700', color: '#3b1f0e', fontSize: '0.95rem' }}>{artwork.title}</p>
-                  <p style={{ color: '#a85f18', fontSize: '0.8rem', marginTop: '2px' }}>by {artwork.username} · {artwork.category} · {artwork.country}</p>
-                  <p style={{ color: '#c9a06a', fontSize: '0.75rem', marginTop: '2px' }}>{new Date(artwork.created_at).toLocaleDateString()}</p>
+                  {/* Clickable title */}
+                  <a href={`/artwork/${artwork.artwork_id}`} style={{ textDecoration: 'none' }}>
+                    <p style={{ fontWeight: '700', color: '#3b1f0e', fontSize: '0.95rem', cursor: 'pointer' }}>
+                      {artwork.title}
+                    </p>
+                  </a>
+                  <p style={{ color: '#a85f18', fontSize: '0.8rem', marginTop: '2px' }}>
+                    by {artwork.username} · {artwork.category} · {artwork.country}
+                  </p>
+                  <p style={{ color: '#c9a06a', fontSize: '0.75rem', marginTop: '2px' }}>
+                    {new Date(artwork.created_at).toLocaleDateString()}
+                  </p>
                 </div>
+
                 <span style={{
-                  padding: '4px 12px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '700', flexShrink: 0,
+                  padding: '4px 12px', borderRadius: '999px',
+                  fontSize: '0.75rem', fontWeight: '700', flexShrink: 0,
                   backgroundColor: artwork.status === 'active' ? '#dcfce7' : '#fee2e2',
                   color: artwork.status === 'active' ? '#16a34a' : '#dc2626'
                 }}>
                   {artwork.status}
                 </span>
+
                 <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
                   <button
                     onClick={() => handleHide(artwork.artwork_id, artwork.status)}
@@ -141,7 +187,12 @@ export default function Admin() {
                   </button>
                   <button
                     onClick={() => handleDelete(artwork.artwork_id)}
-                    style={{ padding: '8px 16px', backgroundColor: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '8px', fontSize: '0.82rem', fontWeight: '600', cursor: 'pointer' }}
+                    style={{
+                      padding: '8px 16px',
+                      backgroundColor: '#fee2e2', color: '#dc2626',
+                      border: 'none', borderRadius: '8px',
+                      fontSize: '0.82rem', fontWeight: '600', cursor: 'pointer'
+                    }}
                   >
                     Delete
                   </button>
