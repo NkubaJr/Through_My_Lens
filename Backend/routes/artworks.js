@@ -4,6 +4,20 @@ const jwt = require('jsonwebtoken');
 const xss = require('xss');
 const db = require('../database');
 
+// helper to convert BigInt values in objects to numbers
+function sanitizeRow(row) {
+  if (!row) return row;
+  const clean = {};
+  for (const key of Object.keys(row)) {
+    clean[key] = typeof row[key] === 'bigint' ? Number(row[key]) : row[key];
+  }
+  return clean;
+}
+
+function sanitizeRows(rows) {
+  return rows.map(sanitizeRow);
+}
+
 function authenticate(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorised. Please log in.' });
@@ -36,7 +50,7 @@ router.get('/', async (req, res) => {
   sql += ' ORDER BY created_at DESC';
 
   const result = await db.execute({ sql, args });
-  res.json(result.rows);
+  res.json(sanitizeRows(result.rows));
 });
 
 // GET /api/artworks/admin/all
@@ -46,7 +60,7 @@ router.get('/admin/all', authenticate, isAdmin, async (req, res) => {
      FROM artworks JOIN users ON artworks.user_id = users.user_id 
      ORDER BY created_at DESC`
   );
-  res.json(result.rows);
+  res.json(sanitizeRows(result.rows));
 });
 
 // GET /api/artworks/:id
@@ -57,7 +71,7 @@ router.get('/:id', async (req, res) => {
           WHERE artwork_id = ?`,
     args: [req.params.id]
   });
-  const artwork = result.rows[0];
+  const artwork = sanitizeRow(result.rows[0]);
   if (!artwork) return res.status(404).json({ error: 'Artwork not found' });
 
   const likesResult = await db.execute({
@@ -72,8 +86,8 @@ router.get('/:id', async (req, res) => {
 
   res.json({
     ...artwork,
-    likes: likesResult.rows[0].count,
-    comments: commentsResult.rows
+    likes: Number(likesResult.rows[0].count),
+    comments: sanitizeRows(commentsResult.rows)
   });
 });
 
@@ -96,7 +110,7 @@ router.post('/', authenticate, async (req, res) => {
     args: [cleanTitle, cleanStory, category, country, file_url, extra_images || '[]', req.user.userId]
   });
 
-  res.json({ message: 'Artwork uploaded successfully!', artworkId: result.lastInsertRowid });
+  res.json({ message: 'Artwork uploaded successfully!', artworkId: Number(result.lastInsertRowid) });
 });
 
 // DELETE /api/artworks/:id
@@ -105,7 +119,7 @@ router.delete('/:id', authenticate, async (req, res) => {
     sql: 'SELECT * FROM artworks WHERE artwork_id = ?',
     args: [req.params.id]
   });
-  const artwork = result.rows[0];
+  const artwork = sanitizeRow(result.rows[0]);
   if (!artwork) return res.status(404).json({ error: 'Artwork not found' });
 
   if (artwork.user_id !== req.user.userId && req.user.role !== 'Admin') {
@@ -125,7 +139,7 @@ router.patch('/:id/hide', authenticate, isAdmin, async (req, res) => {
     sql: 'SELECT * FROM artworks WHERE artwork_id = ?',
     args: [req.params.id]
   });
-  const artwork = result.rows[0];
+  const artwork = sanitizeRow(result.rows[0]);
   if (!artwork) return res.status(404).json({ error: 'Artwork not found' });
 
   const newStatus = artwork.status === 'active' ? 'hidden' : 'active';
@@ -155,7 +169,7 @@ router.post('/:id/like', async (req, res) => {
       sql: 'SELECT COUNT(*) as count FROM likes WHERE artwork_id = ?',
       args: [req.params.id]
     });
-    return res.json({ liked: false, likes: count.rows[0].count });
+    return res.json({ liked: false, likes: Number(count.rows[0].count) });
   }
 
   await db.execute({
@@ -166,7 +180,7 @@ router.post('/:id/like', async (req, res) => {
     sql: 'SELECT COUNT(*) as count FROM likes WHERE artwork_id = ?',
     args: [req.params.id]
   });
-  res.json({ liked: true, likes: count.rows[0].count });
+  res.json({ liked: true, likes: Number(count.rows[0].count) });
 });
 
 // POST /api/artworks/:id/comment
@@ -216,7 +230,7 @@ router.get('/:id/connections', authenticate, async (req, res) => {
     sql: 'SELECT * FROM transactions WHERE artwork_id = ? ORDER BY support_date DESC',
     args: [req.params.id]
   });
-  res.json(result.rows);
+  res.json(sanitizeRows(result.rows));
 });
 
 module.exports = router;
