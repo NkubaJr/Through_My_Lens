@@ -67,7 +67,16 @@ async function initDb() {
     )
   `);
 
-  // create admin account if it doesn't exist
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS password_resets (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL,
+      token TEXT NOT NULL,
+      expires_at DATETIME NOT NULL,
+      used INTEGER DEFAULT 0
+    )
+  `);
+
   const bcrypt = require('bcryptjs');
   const existing = await db.execute({
     sql: 'SELECT * FROM users WHERE email = ?',

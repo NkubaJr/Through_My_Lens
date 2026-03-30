@@ -38,15 +38,8 @@ export default function Login() {
     <div style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{
-            width: '64px', height: '64px', borderRadius: '50%',
-            backgroundColor: '#3b1f0e',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 16px', fontSize: '1.8rem'
-          }}>📸</div>
-          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', fontWeight: '800', color: '#3b1f0e', marginBottom: '6px' }}>
-            Welcome Back
-          </h2>
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: '#3b1f0e', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: '1.8rem' }}>📸</div>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', fontWeight: '800', color: '#3b1f0e', marginBottom: '6px' }}>Welcome Back</h2>
           <p style={{ color: '#a85f18', fontSize: '0.9rem' }}>Log in to your My Lens account</p>
         </div>
 
@@ -57,18 +50,15 @@ export default function Login() {
               <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="you@example.com" style={inputStyle} />
             </div>
             <div>
-              <label style={labelStyle}>Password</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={labelStyle}>Password</label>
+                <Link to="/forgot-password" style={{ fontSize: '0.8rem', color: '#a85f18', textDecoration: 'none' }}>Forgot password?</Link>
+              </div>
               <input type="password" name="password" value={form.password} onChange={handleChange} placeholder="••••••••" style={inputStyle} />
             </div>
             <button
               onClick={handleSubmit} disabled={loading}
-              style={{
-                width: '100%', padding: '13px',
-                backgroundColor: loading ? '#c9a06a' : '#3b1f0e',
-                color: 'white', border: 'none', borderRadius: '12px',
-                fontSize: '1rem', fontWeight: '700',
-                cursor: loading ? 'not-allowed' : 'pointer', marginTop: '4px'
-              }}
+              style={{ width: '100%', padding: '13px', backgroundColor: loading ? '#c9a06a' : '#3b1f0e', color: 'white', border: 'none', borderRadius: '12px', fontSize: '1rem', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', marginTop: '4px' }}
             >
               {loading ? 'Logging in...' : 'Log In'}
             </button>

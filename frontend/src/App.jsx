@@ -9,6 +9,8 @@ import Upload from './pages/Upload';
 import Profile from './pages/Profile';
 import ArtworkDetail from './pages/ArtworkDetail';
 import Admin from './pages/Admin';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 
 function App() {
   return (
@@ -74,6 +76,8 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/artwork/:id" element={<ArtworkDetail />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </Routes>
           </div>
         </div>
