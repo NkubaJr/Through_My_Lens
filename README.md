@@ -152,8 +152,7 @@ All environment variables are set directly on Render and Vercel — nothing sens
 ## SRS Document
 
 Full software requirements specification including use case diagrams, ERD, and sequence diagrams:  
-[Add your SRS link here]
-
+https://docs.google.com/document/d/1HkkA2EG1z8SfYddC5HaF0VpCLJcADadyMp8z7PdyikI/edit?usp=sharing) 
 ---
 
 Igiraneza Nkuba Junior — African Leadership University, 2026
