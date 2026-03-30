@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
     args: [email, username, password_hash]
   });
 
-  res.json({ message: 'Account created successfully!', userId: result.lastInsertRowid });
+  res.json({ message: 'Account created successfully!', userId: Number(result.lastInsertRowid) });
 });
 
 // POST /api/auth/login
